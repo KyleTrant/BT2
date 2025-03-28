@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/../BaseModel.php';
-require_once __DIR__ . '/TaskInput.php';
-class Task extends BaseModel {
+namespace App\Models;
+use Shared\Database\Database;
+class TaskModel extends BaseModel {
     protected static $table = 'tasks';
-    protected static $fillable = ['id','user_id', 'title', 'description', 'start_time', 'end_time', 'start_date', 'end_date', 'status'];
+    protected static $fillable = ['user_id', 'title', 'description', 'start_time', 'end_time', 'start_date', 'end_date', 'status'];
     protected static $timestamps = true;
     public static function getByUserId($userId) {
         $db = Database::getInstance();
@@ -22,7 +22,7 @@ class Task extends BaseModel {
             $whereClauses[] = "title LIKE ?";
             $params[] = "%" . $data->titleLike . "%";
         }
-        if ($data->status) {
+        if (!empty($data->status)) {
             $whereClauses[] = "status = ?";
             $params[] = $data->status;
         }
@@ -30,29 +30,21 @@ class Task extends BaseModel {
             $whereClauses[] = "user_id = ?";
             $params[] = $data->userId;
         }
-        if ($data->startDateMin) {
+        if (!empty($data->startDateMin)) {
             $whereClauses[] = "start_date >= ?";
             $params[] = $data->startDateMin;
         }
-        if ($data->startDateMax) {
+        if (!empty($data->startDateMax)) {
             $whereClauses[] = "start_date <= ?";
             $params[] = $data->startDateMax;
         }
-        if ($data->endDateMin) {
+        if (!empty($data->endDateMin)) {
             $whereClauses[] = "end_date >= ?";
             $params[] = $data->endDateMin;
         }
-        if ($data->endDateMax) {
+        if (!empty($data->endDateMax)) {
             $whereClauses[] = "end_date <= ?";
             $params[] = $data->endDateMax;
-        }
-        if ($data->priorityMin) {
-            $whereClauses[] = "priority >= ?";
-            $params[] = $data->priorityMin;
-        }
-        if ($data->priorityMax) {
-            $whereClauses[] = "priority <= ?";
-            $params[] = $data->priorityMax;
         }
         $whereClause = implode(' AND ', $whereClauses);
         $sql = "SELECT * FROM " . static::$table;
