@@ -4,6 +4,7 @@ abstract class BaseModel{
     protected $attributes = []; 
     protected static $table = '';
     protected static $fillable = [];
+    protected static $timestamps = true;
     public function __construct($data = [])
     {
         $this->fill($data); 
@@ -61,7 +62,10 @@ abstract class BaseModel{
         $db = Database::getInstance();
         $db->connect();
         $filteredData = array_intersect_key($data, array_flip(static::$fillable));
-
+        
+        if (static::$timestamps) {
+            $filteredData['updated_at'] = date('Y-m-d H:i:s');
+        }
         if (empty($filteredData)) {
             return static::find($id);
         }

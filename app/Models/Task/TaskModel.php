@@ -4,7 +4,7 @@ require_once __DIR__ . '/TaskInput.php';
 class Task extends BaseModel {
     protected static $table = 'tasks';
     protected static $fillable = ['id','user_id', 'title', 'description', 'start_time', 'end_time', 'start_date', 'end_date', 'status'];
-
+    protected static $timestamps = true;
     public static function getByUserId($userId) {
         $db = Database::getInstance();
         $db->connect();
