@@ -1,33 +1,19 @@
 <?php 
-    require_once __DIR__ . '/app/Models/UserModel.php';
-    $data = [
-        'name' => 'John Doe',
-        'email' => 'john.doe4123@example.com',
-        'password' => 'password123'
-    ];
-   
-    $user = User::create($data);
-    echo "Created User: \n";
-    var_dump($user); // In ra đối tượng người dùng vừa tạo
-    
-    // Kiểm tra việc tìm kiếm người dùng theo ID
-    $foundUser = User::find($user->getAttributes()['id']);
-    echo "Found User by ID: \n";
-    var_dump($foundUser);
-    
-    // Kiểm tra việc cập nhật thông tin người dùng
-    $updatedData = [
-        'name' => 'Updated John',
-        'email' => 'updated.john@example.com'
-    ];
-    $updatedUser = User::update($user->getAttributes()['id'], $updatedData);
-    echo "Updated User: \n";
-    var_dump($updatedUser);
-    
-    // Kiểm tra việc xóa người dùng
-    $userIdToDelete = $updatedUser->getAttributes()['id'];
-    User::delete($userIdToDelete);
-    echo "Deleted User. Trying to find again: \n";
-    $deletedUser = User::find($userIdToDelete);
-    var_dump($deletedUser); // Kết quả phải là null
-?>
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'autoload.php'; 
+require_once 'route.php'; 
+define("ROOT_DIR",__DIR__);
+Router::get('/', 'UserController@index');
+Router::post('/Login', 'UserController@Login');
+Router::get('/Login', 'UserController@index');
+Router::get('/Register', 'UserController@Register');
+Router::post('/Register', 'UserController@Register');
+Router::get('/Logout', 'UserController@Logout');
+Router::get('/Tasks', 'TaskController@Index');
+Router::post('/Tasks/Create', 'TaskController@Create');
+Router::post('/Tasks/Update/{id}', 'TaskController@Update');
+Router::post('/Tasks/Delete/{id}', 'TaskController@Delete');
+//request
+Router::dispatch();

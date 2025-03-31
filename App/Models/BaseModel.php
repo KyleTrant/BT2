@@ -1,7 +1,9 @@
 <?php
-require_once __DIR__ .'/../../Shared/Database/Database.php';
+namespace App\Models;
+use Shared\Database\Database;
+
 abstract class BaseModel{
-    protected $attributes = []; 
+    private $attributes = []; 
     protected static $table = '';
     protected static $fillable = [];
     protected static $timestamps = true;
@@ -11,14 +13,22 @@ abstract class BaseModel{
     }
     protected function fill($data) {
         foreach ($data as $key => $value) {
-            if (in_array($key, static::$fillable)) {
-                $this->attributes[$key] = $value;
-                $this->$key = $value;
-            }
+            if ($key === 'id') {
+                $this->attributes['id'] = $value ?? null;
+            } 
+                $this->__set($key, $value);
         }
     }
-    public function getAttributes() {
-        return $this->attributes;
+    public function __get($key) {
+        if (array_key_exists($key, $this->attributes)) {
+            return $this->attributes[$key];
+        }
+        return null;
+    }
+    public function __set($key, $value) {
+        if (in_array($key, static::$fillable)) {
+            $this->attributes[$key] = $value;
+        } 
     }
     public static function GetAll() {
         $db = Database::getInstance();
@@ -32,6 +42,9 @@ abstract class BaseModel{
         $results = $db->query("SELECT * FROM " . static::$table)->get_result()->fetch_all(MYSQLI_ASSOC);
         $db->disConnect();
         return array_map(fn($item) => new static($item), $results);
+    }
+    public function GetAttributes(){
+        return  $this->attributes;
     }
     public static function find($id) {
         $db = Database::getInstance();
@@ -83,5 +96,14 @@ abstract class BaseModel{
         $db->query($sql, [$id]);
         $db->disConnect();
     }
-
+    public function save() {
+        if (isset($this->attributes['id'])) {
+            return $this->update($this->attributes['id'], $this->attributes);
+        } else {
+            return $this->create($this->attributes);
+        }
+    }
+    
+    
+    
 }

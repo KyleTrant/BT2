@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '../../../Config/config.php';
+namespace Shared\Database;
+require_once ROOT_DIR .'/Config/config.php';
 
 class Database{
     private $conn;
@@ -14,7 +15,7 @@ class Database{
         }
         try{
             // mysqli_report(MYSQLI_REPORT_OFF); //automatically throw exceptions
-            $this->conn = new mysqli(DB_HOST, DB_USER, DB_PASS);
+            $this->conn = new \mysqli(DB_HOST, DB_USER, DB_PASS);
             // Check DB_NAME exist
             $result = $this->conn->query("SHOW DATABASES LIKE '". DB_NAME ."'");
             if ($result->num_rows === 0) {
@@ -23,7 +24,7 @@ class Database{
              }
             $this->conn->select_db(DB_NAME);
         }
-        catch(Exception $e){
+        catch(\Exception $e){
             die($e->getMessage());
         }        
     }
@@ -52,12 +53,12 @@ class Database{
 public function query($sql, $params = []) {
     try {
         if ($this->conn === null || $this->conn->connect_errno) {
-            throw new Exception("Database connection error: " . $this->conn->connect_error);
+            throw new \Exception("Database connection error: " . $this->conn->connect_error);
         }
      
         $stmt = $this->conn->prepare($sql);
         if ($stmt === false) {
-            throw new Exception("Error query " . $this->conn->error);
+            throw new \Exception("Error query " . $this->conn->error);
         }
        
         if (!empty($params)) {
@@ -78,14 +79,14 @@ public function query($sql, $params = []) {
               
                 $stmt->bind_param($types, ...$params);
             }
-            catch (Exception $e) {
+            catch (\Exception $e) {
                 die(": " . $e->getMessage()); }
             
         }
        
         $stmt->execute();
         return $stmt;
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         die(": " . $e->getMessage()); }
 }
 

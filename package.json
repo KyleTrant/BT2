@@ -1,0 +1,27 @@
+{
+  "name": "todoapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"npx @tailwindcss/cli -i ./public/css/style.css  -o ./dist/style.css  --watch",
+    "build": "npx @tailwindcss/cli -i ./public/css/style.css -o ./dist/style.css  --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KyleTrant/BT2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KyleTrant/BT2/issues"
+  },
+  "homepage": "https://github.com/KyleTrant/BT2#readme",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.0.17",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.17"
+  }
+}
