@@ -1,5 +1,6 @@
 <?php
-namespace App\Models;
+namespace App\Models\Task;
+use App\Models\BaseModel;
 use Shared\Database\Database;
 class TaskModel extends BaseModel {
     protected static $table = 'tasks';
@@ -56,4 +57,16 @@ class TaskModel extends BaseModel {
         $db->disConnect();
         return array_map(fn($item) => new static($item), $results);
     }
+    public static function isValidTimeRange($startDate, $startTime, $endDate, $endTime){
+    if (empty($startDate) || empty($startTime) || empty($endDate) || empty($endTime)) {
+        return false;
+    }
+    $startDateTime = strtotime("$startDate $startTime");
+    $endDateTime = strtotime("$endDate $endTime");
+    if ($startDateTime === false || $endDateTime === false || $startDateTime >= $endDateTime) {
+        return false;
+    }
+    return true; 
+}
+
 }

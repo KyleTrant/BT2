@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace App\Models\Task;
 class TaskInput {
     public $titleLike = null;       
     public $status = null;           

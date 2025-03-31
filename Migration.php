@@ -12,7 +12,7 @@ try {
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(100) NOT NULL,
-                email VARCHAR(100) UNIQUE NOT NULL,
+                gmail VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -24,8 +24,8 @@ try {
                 user_id INT NOT NULL,
                 title VARCHAR(255) NOT NULL,
                 description TEXT NULL,
-                start_time DATETIME NULL,
-                end_time DATETIME NULL,
+                start_time TIME NULL,
+                end_time TIME NULL,
                 start_date DATE NULL,
                 end_date DATE NULL,
                 status VARCHAR(20) DEFAULT NULL,
@@ -78,7 +78,7 @@ try {
   
 // password_hash
     $defaultAdminPassword = password_hash('admin123', PASSWORD_DEFAULT); 
-    $insertAdminQuery = "INSERT INTO users (name, email, password) 
+    $insertAdminQuery = "INSERT INTO users (name, gmail, password) 
                          VALUES ('Admin', 'admin@example.com', '$defaultAdminPassword')";
 
     if ($conn->query($insertAdminQuery) === TRUE) {

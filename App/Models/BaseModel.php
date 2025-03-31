@@ -43,6 +43,9 @@ abstract class BaseModel{
         $db->disConnect();
         return array_map(fn($item) => new static($item), $results);
     }
+    public function GetAttributes(){
+        return  $this->attributes;
+    }
     public static function find($id) {
         $db = Database::getInstance();
         $db->connect();

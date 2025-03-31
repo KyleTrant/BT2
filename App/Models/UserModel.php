@@ -3,11 +3,8 @@ namespace App\Models;
 use Shared\Database\Database;
 class UserModel extends BaseModel {
     protected static $table = 'users';
-    protected static $fillable = ['name', 'email', 'password'];
+    protected static $fillable = ['name', 'gmail', 'password'];
     protected static $timestamps = true;
-    public function tasks() {
-       TaskModel::getByUserId($this->id);
-    }
     public static function findUser(string $gmail){
         $db =Database::getInstance();
         $db->connect();
